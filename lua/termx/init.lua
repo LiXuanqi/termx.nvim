@@ -70,11 +70,24 @@ M.setup = function()
 	vim.keymap.set("n", "<leader>th", M.hide, { desc = "[T]erminal: [H]ide" })
 	vim.keymap.set("n", "<leader>tt", M.toggle, { desc = "[T]erminal: [T]oggle" })
 	vim.keymap.set("n", "<leader>tc", M.close, { desc = "[T]erminal: [C]lose" })
+
+	local function is_terminal_buffer(bufnr)
+		return vim.bo[bufnr].buftype == "terminal"
+	end
+
+	vim.api.nvim_create_autocmd("QuitPre", {
+		pattern = "*",
+		callback = function()
+			local current_buf = vim.api.nvim_get_current_buf()
+			if is_terminal_buffer(current_buf) then
+				M._state = {}
+			end
+		end,
+	})
 end
 
 -- M.open()
 -- M.run("ls")
 -- M.run("git status")
 -- M.run("ls")
-
 return M
