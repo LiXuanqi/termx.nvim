@@ -59,8 +59,7 @@ end
 
 M.run = function(cmd)
 	if not is_term_window_open() then
-		print("Terminal is not open")
-		return
+		M.open()
 	end
 	vim.api.nvim_chan_send(M._state.term_job_id, cmd .. "\n")
 end
